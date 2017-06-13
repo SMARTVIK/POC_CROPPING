@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    ​
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/materialup.appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        ​
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/main.collapsing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:collapsedTitleGravity="center"
+            app:collapsedTitleTextAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            app:contentScrim="#00000000"
+            app:expandedTitleGravity="top|center_horizontal"
+            app:expandedTitleMarginStart="54dp"
+            app:expandedTitleTextAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
+            app:title="Nitish"
+            app:toolbarId="@id/toolbar">
+            ​
+
+            <FrameLayout
+                android:id="@+id/topLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_alignParentTop="true"
+
+                android:gravity="bottom"
+                android:visibility="visible"
+                app:layout_collapseMode="pin">
+                ​
+
+                <ImageView
+                    android:id="@+id/materialup.profile_backdrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/material_flat"
+
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:orientation="vertical">
+
+
+
+                        <LinearLayout
+                            android:id="@+id/materialup.toolbar"
+                            style="@style/ToolBarWithNavigationBack"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:background="@color/brand_primary"
+                            android:minHeight="?attr/actionBarSize"
+                            android:orientation="horizontal"
+                            android:weightSum="3"
+                            app:layout_scrollFlags="scroll|enterAlways|snap">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="48dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="Follow" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="48dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="48dp"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="Follow" />
+                        </LinearLayout>
+
+
+                    ​
+
+                    <LinearLayout
+                        android:id="@+id/materialup.title_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:background="@color/brand_primary"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingTop="8dp"
+                        app:layout_scrollFlags="scroll|enterAlways|snap">
+                        ​
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rhea Bedi"
+                            android:textColor="@color/black"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle" />
+                        ​
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginTop="4dp"
+                            android:text="109 POSTS"
+                            android:textColor="@color/black"
+
+                            android:textSize="11sp" />
+                        ​
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/materialup.profile_image"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_marginBottom="60dp"
+                    android:src="@drawable/user_avatar"
+                    app:border_color="#FFF"
+                    app:border_width="2dp"
+
+                    />
+            </FrameLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:gravity="center"
+                app:layout_collapseMode="pin"
+                app:contentInsetStart="0dp"
+                android:visibility="visible">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingTop="8dp"
+                        app:layout_scrollFlags="scroll|enterAlways|snap">
+                        ​
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rhea Bedi"
+                            android:textColor="@color/black"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle" />
+                        ​
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginTop="4dp"
+                            android:textColor="@color/black"
+                            android:text="109 POSTS"
+
+                            android:textSize="11sp" />
+                        ​
+                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/cancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/user_name"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignTop="@+id/user_name"
+                        android:layout_gravity="left"
+                        android:layout_marginTop="20dp"
+                        android:paddingRight="10dp"
+                        android:src="@mipmap/ic_launcher"
+
+                        android:visibility="visible" />
+
+                    <ImageView
+                        android:id="@+id/right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/user_name"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignTop="@+id/user_name"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="20dp"
+                        android:paddingRight="10dp"
+                        android:src="@mipmap/ic_launcher"
+
+                        android:visibility="visible" />
+                </FrameLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+        ​​
+
+        ​
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/materialup.tabs"
+            android:layout_width="fill_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:tabIndicatorColor="?android:attr/textColorPrimaryInverse"
+            app:tabIndicatorHeight="4dp"
+            app:tabSelectedTextColor="?android:attr/textColorPrimaryInverse" />
+    </android.support.design.widget.AppBarLayout>
+    ​
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/materialup.viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    ​
+
+
+</android.support.design.widget.CoordinatorLayout>
