@@ -12,30 +12,35 @@ import android.widget.ImageView;
 public class Main2Activity extends AppCompatActivity {
     //144,191,329,109
     ImageView imageView;
-    private int START_X = 29;
-    private int START_Y = 54;
-    private int WIDTH_PX = 153;
+    private int START_X = 179;
+    private int START_Y = 178;
+    private int WIDTH_PX = 51;
     private int HEIGHT_PX = 51;
+
+    /*private int START_X = 142;
+    private int START_Y = 141;
+    private int WIDTH_PX = 127;
+    private int HEIGHT_PX = 121;*/
 //LOG: h= 51 w= 153 x= 29 y= 54
  //   D/NEW  XY: X=87  Y=261  HIEGHT=153  WIDTh459
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-        START_X= getIntent().getIntExtra("x",0);
-        START_Y=getIntent().getIntExtra("y",0);
-        HEIGHT_PX=getIntent().getIntExtra("h",0);
-        WIDTH_PX=getIntent().getIntExtra("w",0);
-       setXY();
-       /* BitmapFactory.Options options=new BitmapFactory.Options();
-        options.inDensity=480;*/
-        Bitmap SOURCE_BITMAP = BitmapFactory.decodeResource(getResources(), R.drawable.actress2); // Get the source Bitmap using your favorite method :-)
+        START_X = getIntent().getIntExtra("x", 0);
+        START_Y = getIntent().getIntExtra("y", 0);
+        HEIGHT_PX = getIntent().getIntExtra("h", 0);
+        WIDTH_PX = getIntent().getIntExtra("w", 0);
+//        setXY();
+        BitmapFactory.Options options=new BitmapFactory.Options();
+        options.inScaled=false;
+        Bitmap SOURCE_BITMAP = BitmapFactory.decodeResource(getResources(), R.drawable.image,options); // Get the source Bitmap using your favorite method :-)
         Bitmap newBitmap;
 // Crop bitmap
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
         Log.i("LOG", metrics.densityDpi + "  " + metrics.xdpi + "  " + metrics.ydpi);
         int kk = 0;
-        newBitmap = Bitmap.createBitmap(SOURCE_BITMAP, START_X , (START_Y - kk), WIDTH_PX+START_X>SOURCE_BITMAP.getWidth()?SOURCE_BITMAP.getWidth()-START_X:WIDTH_PX ,  HEIGHT_PX+START_Y>SOURCE_BITMAP.getHeight()?SOURCE_BITMAP.getHeight()-START_Y:HEIGHT_PX, null, false);
+        newBitmap = Bitmap.createBitmap(SOURCE_BITMAP, START_X, START_Y, WIDTH_PX , HEIGHT_PX, null, false);
       /*  if (480 > metrics.densityDpi) {
             kk = (480 - metrics.densityDpi) / 3;
 
@@ -53,10 +58,6 @@ public class Main2Activity extends AppCompatActivity {
                 newBitmap = Bitmap.createBitmap(SOURCE_BITMAP, (START_X + kk), (START_Y + kk), SOURCE_BITMAP.getWidth() + START_X + kk, HEIGHT_PX + kk, null, false);
             }
         }*/
-
-
-
-
 
 // Assign new bitmap to ImageView
         imageView = (ImageView) findViewById(R.id.image);

@@ -362,7 +362,7 @@ public class ImageCropView extends ImageView {
         postInvalidate();
     }
 
-    private void drawTransparentLayer(Canvas canvas) {
+    public void drawTransparentLayer(Canvas canvas) {
         /*-
           -------------------------------------
           |                top                |
@@ -376,17 +376,15 @@ public class ImageCropView extends ImageView {
           |              bottom               |
           -------------------------------------
          */
-
         Rect r = new Rect();
         getLocalVisibleRect(r);
-
         canvas.drawRect(r.left, r.top, r.right, mCropRect.top, mTransparentLayerPaint);                          // top
         canvas.drawRect(r.left, mCropRect.bottom, r.right, r.bottom, mTransparentLayerPaint);                    // bottom
         canvas.drawRect(r.left, mCropRect.top, mCropRect.left, mCropRect.bottom, mTransparentLayerPaint);        // left
         canvas.drawRect(mCropRect.right, mCropRect.top, r.right, mCropRect.bottom, mTransparentLayerPaint);      // right
     }
 
-    private void drawGrid(Canvas canvas) {
+    public void drawGrid(Canvas canvas) {
         int index = 0;
         for (int i = 0; i < GRID_ROW_COUNT - 1; i++) {
             mPts[index++] = mCropRect.left;                                                                             //start Xi
@@ -425,7 +423,6 @@ public class ImageCropView extends ImageView {
             mAspectRatioHeight = aspectRatioHeight;
             mTargetAspectRatio = (float) mAspectRatioHeight / (float) mAspectRatioWidth;
         }
-
         resetDisplay();
     }
 
@@ -757,7 +754,7 @@ public class ImageCropView extends ImageView {
         setImageMatrix(getImageViewMatrix());
     }
 
-    protected PointF getCenter() {
+    public PointF getCenter() {
         return mCenter;
     }
 
@@ -783,13 +780,14 @@ public class ImageCropView extends ImageView {
         zoomTo(scale, center.x, center.y, durationMs);
     }
 
-    protected void zoomTo(float scale, float centerX, float centerY) {
+    public void zoomTo(float scale, float centerX, float centerY) {
         if (scale > getMaxScale()) scale = getMaxScale();
 
         float oldScale = getScale();
         float deltaScale = scale / oldScale;
         postScale(deltaScale, centerX, centerY);
         center(true, true);
+        invalidate();
     }
 
     protected void onZoomAnimationCompleted(float scale) {

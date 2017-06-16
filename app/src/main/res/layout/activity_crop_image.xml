@@ -5,24 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="saulmm.coordinatorexamples.CropImage">
+
     <Button
         android:id="@+id/done"
-        android:text="done"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="done" />
 
-    <com.naver.android.helloyako.imagecrop.view.ImageCropView
-        android:id="@+id/zoomImageView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#252732"
-        android:layout_weight="1"
-        app:gridInnerColor="#66ffffff"
-        app:gridInnerStroke="1dp"
-        app:gridOuterColor="#ffffff"
-        android:src="@drawable/actress2"
-        app:gridOuterStroke="1dp"
-        app:setInnerGridMode="on"
-        app:setOuterGridMode="on" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <com.naver.android.helloyako.imagecrop.view.ImageCropView
+            android:id="@+id/zoomImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#252732"
+            android:src="@drawable/actress2"
+            app:gridInnerColor="#66ffffff"
+            app:gridInnerStroke="1dp"
+            app:gridOuterColor="#ffffff"
+            app:gridOuterStroke="1dp"
+            app:setInnerGridMode="on"
+            app:setOuterGridMode="on" />
+
+    </ScrollView>
+
 
 </FrameLayout>

@@ -28,6 +28,5 @@ dependencies {
     compile "com.android.support:cardview-v7:$SUPPORT"
     compile "com.android.support:recyclerview-v7:$SUPPORT"
     compile 'de.hdodenhof:circleimageview:1.3.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.1'
     compile project(':imagecropview')
 }
