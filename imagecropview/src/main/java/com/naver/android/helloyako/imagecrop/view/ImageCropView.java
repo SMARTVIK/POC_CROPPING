@@ -273,9 +273,11 @@ public class ImageCropView extends ImageView {
 
         RectF currentCropRect = cropInfo.getCroppedRect();
 
-        float distanceX = (croppedRect.left) - (currentCropRect.left);
-        float distanceY = (croppedRect.top) - (currentCropRect.top);
-        scrollBy(-distanceX, -distanceY);
+//        float distanceX = Math.max((croppedRect.left-currentCropRect.left), (croppedRect.right-currentCropRect.right));
+//        float distanceY = Math.max((croppedRect.top-currentCropRect.top), (croppedRect.bottom-currentCropRect.bottom));
+        float distanceX = (currentCropRect.left - croppedRect.left);
+        float distanceY = (currentCropRect.top - croppedRect.top);
+        scrollBy((float) Math.pow(distanceX, 2), (float) Math.pow(distanceY, 2));
     }
 
     @Override
