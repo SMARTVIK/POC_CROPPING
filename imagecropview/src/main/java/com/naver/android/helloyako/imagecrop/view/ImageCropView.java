@@ -111,7 +111,7 @@ public class ImageCropView extends ImageView {
     private int gridOuterMode;
     private float gridLeftRightMargin;
     private float gridTopBottomMargin;
-
+    private RectF mCroppedRect;
     private String imageFilePath;
 
     protected ScaleGestureDetector mScaleDetector;
@@ -193,6 +193,41 @@ public class ImageCropView extends ImageView {
         mRestoreRequest = false;
     }
 
+
+    public void setCropRect(final RectF croppedRect) {
+
+        this.mCroppedRect = croppedRect;
+
+//        if (croppedRect == null || croppedRect.isEmpty())
+//            return;
+//
+//        Log.d("cropped Rect:= ", croppedRect.flattenToString());
+//
+//        CropInfo cropInfo = getCropInfo();
+//
+//        if (cropInfo == null) {
+//            mPostLayoutRunnable = new Runnable() {
+//
+//                @Override
+//                public void run() {
+//                    setCropRect(croppedRect);
+//                    requestLayout();
+//                }
+//            };
+//            return;
+//        }
+//
+//        Rect currentCropRect = cropInfo.getCroppedRect();
+//        float widthScale = Math.min(croppedRect.width() / currentCropRect.width(), croppedRect.width() / currentCropRect.height());
+//        float heightScale = Math.min(croppedRect.height() / currentCropRect.height(), croppedRect.height() / currentCropRect.width());
+////        scale =;
+////
+////        mMaxScale = mMi
+//// nScale * mMaxScaleMultiplier;
+//        postScale(Math.max(widthScale, heightScale), (croppedRect.right - croppedRect.left) / 2, (croppedRect.bottom - croppedRect.top) / 2);
+
+    }
+
     @Override
     public void setScaleType(ScaleType scaleType) {
         if (scaleType == ScaleType.MATRIX) {
@@ -207,6 +242,40 @@ public class ImageCropView extends ImageView {
         super.onDraw(canvas);
         drawTransparentLayer(canvas);
         drawGrid(canvas);
+
+    }
+
+
+    private void setUpIntialScale(RectF croppedRect) {
+        if (croppedRect == null || croppedRect.isEmpty())
+            return;
+        CropInfo cropInfo = getCropInfo();
+        if (cropInfo == null)
+            return;
+
+        RectF currentCropRect = cropInfo.getCroppedRect();
+
+        float widthScale = currentCropRect.width() / croppedRect.width();
+        float heightScale = currentCropRect.height() / croppedRect.height();
+        float targetScale = Math.max(widthScale, heightScale);
+//            (currentCropRect.right - currentCropRect.left) / 2, (currentCropRect.bottom - currentCropRect.top) / 2
+        targetScale = Math.min(getMaxScale(), Math.max(targetScale, getMinScale() - 0.1f));
+        zoomTo(targetScale, (croppedRect.right - croppedRect.left) / 2, (croppedRect.bottom - croppedRect.top) / 2);
+    }
+
+    private void setUpIntialTranslate(RectF croppedRect) {
+        if (croppedRect == null || croppedRect.isEmpty())
+            return;
+
+        CropInfo cropInfo = getCropInfo();
+        if (cropInfo == null)
+            return;
+
+        RectF currentCropRect = cropInfo.getCroppedRect();
+
+        float distanceX = (croppedRect.left) - (currentCropRect.left);
+        float distanceY = (croppedRect.top) - (currentCropRect.top);
+        scrollBy(-distanceX, -distanceY);
     }
 
     @Override
@@ -341,6 +410,13 @@ public class ImageCropView extends ImageView {
             if (mBitmapChanged) mBitmapChanged = false;
             if (mRestoreRequest) mRestoreRequest = false;
         }
+        RectF croppedRect = null;
+        if (mCroppedRect != null && !mCroppedRect.isEmpty()) {
+            croppedRect = mCroppedRect;
+            mCroppedRect = null;
+        }
+        setUpIntialScale(croppedRect);
+        setUpIntialTranslate(croppedRect);
     }
 
     public void resetDisplay() {
@@ -883,7 +959,6 @@ public class ImageCropView extends ImageView {
 
     protected void zoomTo(float scale, float centerX, float centerY, final float durationMs) {
         if (scale > getMaxScale()) scale = getMaxScale();
-
         final long startTime = System.currentTimeMillis();
         final float oldScale = getScale();
 
@@ -932,6 +1007,7 @@ public class ImageCropView extends ImageView {
         }
         return bitmap;
     }
+
 
     public CropInfo getCropInfo() {
         Bitmap viewBitmap = getViewBitmap();
@@ -1217,6 +1293,7 @@ public class ImageCropView extends ImageView {
     public interface OnImageViewTouchSingleTapListener {
 
         void onSingleTapConfirmed();
+
     }
 
     public boolean isChangingScale() {

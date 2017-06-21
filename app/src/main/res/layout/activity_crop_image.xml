@@ -12,10 +12,10 @@
         android:layout_height="wrap_content"
         android:text="done" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center">-->
 
         <com.naver.android.helloyako.imagecrop.view.ImageCropView
             android:id="@+id/zoomImageView"
@@ -31,7 +31,7 @@
             app:setInnerGridMode="on"
             app:setOuterGridMode="on" />
 
-    </ScrollView>
+    <!--</ScrollView>-->
 
 
 </FrameLayout>

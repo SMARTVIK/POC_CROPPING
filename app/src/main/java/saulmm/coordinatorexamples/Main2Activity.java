@@ -1,46 +1,44 @@
 package saulmm.coordinatorexamples;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 public class Main2Activity extends AppCompatActivity {
-    //144,191,329,109
-    ImageView imageView;
-    private int START_X = 179;
-    private int START_Y = 178;
-    private int WIDTH_PX = 51;
-    private int HEIGHT_PX = 51;
 
-    /*private int START_X = 142;
-    private int START_Y = 141;
-    private int WIDTH_PX = 127;
-    private int HEIGHT_PX = 121;*/
-//LOG: h= 51 w= 153 x= 29 y= 54
- //   D/NEW  XY: X=87  Y=261  HIEGHT=153  WIDTh459
+    private ImageView imageView;
+    private RectF croppedRect = new RectF();
+    private Bitmap SOURCE_BITMAP;
+    private
+    @DrawableRes
+    int imageID = R.drawable.image;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-        START_X = getIntent().getIntExtra("x", 0);
-        START_Y = getIntent().getIntExtra("y", 0);
-        HEIGHT_PX = getIntent().getIntExtra("h", 0);
-        WIDTH_PX = getIntent().getIntExtra("w", 0);
-//        setXY();
-        BitmapFactory.Options options=new BitmapFactory.Options();
-        options.inScaled=false;
-        Bitmap SOURCE_BITMAP = BitmapFactory.decodeResource(getResources(), R.drawable.image,options); // Get the source Bitmap using your favorite method :-)
+//        this.croppedRect.set(CropImage.getCroppedRect(getIntent().getExtras()));
+        //        setXY();
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
+        SOURCE_BITMAP = BitmapFactory.decodeResource(getResources(), imageID, options); // Get the source Bitmap using your favorite method :-)
         Bitmap newBitmap;
-// Crop bitmap
+        // Crop bitmap
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
         Log.i("LOG", metrics.densityDpi + "  " + metrics.xdpi + "  " + metrics.ydpi);
         int kk = 0;
-        newBitmap = Bitmap.createBitmap(SOURCE_BITMAP, START_X, START_Y, WIDTH_PX , HEIGHT_PX, null, false);
+
       /*  if (480 > metrics.densityDpi) {
             kk = (480 - metrics.densityDpi) / 3;
 
@@ -62,22 +60,30 @@ public class Main2Activity extends AppCompatActivity {
 // Assign new bitmap to ImageView
         imageView = (ImageView) findViewById(R.id.image);
 
-        imageView.setImageBitmap(newBitmap);
+        udpateImage();
+
+        findViewById(R.id.btn_cropImage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CropImage.cropImage(Main2Activity.this, imageID, croppedRect);
+            }
+        });
     }
 
-    public void setXY()
-    {    DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+    public void setXY() {
+        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
 
-        Log.d("OLD  XY","X="+START_X+"  Y="+START_Y+"  HIEGHT="+HEIGHT_PX+"  WIDTh"+WIDTH_PX);
-        START_X = (int) (((float)metrics.densityDpi/160)*START_X);
+        Log.d("OLD  XY", croppedRect.toShortString());
+        croppedRect.left = (int) (((float) metrics.densityDpi / 160) * croppedRect.left);
 
-        START_Y = (int) (((float)metrics.densityDpi/160)*START_Y);
+        croppedRect.top = (int) (((float) metrics.densityDpi / 160) * croppedRect.top);
 
-        HEIGHT_PX = (int) (((float)metrics.densityDpi/160)*HEIGHT_PX);
+        croppedRect.bottom = (int) (((float) metrics.densityDpi / 160) * croppedRect.bottom);
 
-        WIDTH_PX = (int) (((float)metrics.densityDpi/160)*WIDTH_PX);
-        Log.d("NEW  XY","X="+START_X+"  Y="+START_Y+"  HIEGHT="+HEIGHT_PX+"  WIDTh"+WIDTH_PX);
+        croppedRect.right = (int) (((float) metrics.densityDpi / 160) * croppedRect.right);
+        Log.d("NEW  XY", croppedRect.toShortString());
     }
+
     public static int convertPixelsToDp(float px) {
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
         float dp = px / (metrics.densityDpi / 160f);
@@ -92,4 +98,22 @@ public class Main2Activity extends AppCompatActivity {
     }
 
 
+    private void udpateImage() {
+        Bitmap newBitmap = SOURCE_BITMAP;
+        if (!this.croppedRect.isEmpty())
+            newBitmap = Bitmap.createBitmap(SOURCE_BITMAP, (int) this.croppedRect.left, (int) this.croppedRect.top, (int) this.croppedRect.width(), (int) this.croppedRect.height(), null, false);
+
+        imageView.setImageBitmap(newBitmap);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK)
+            return;
+        if (CropImage.isCropImageResult(requestCode)) {
+            this.croppedRect.set(CropImage.getCroppedRect(data.getExtras()));
+            udpateImage();
+        }
+    }
 }

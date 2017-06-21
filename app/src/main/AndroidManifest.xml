@@ -17,15 +17,17 @@
         <activity android:name=".MaterialUpConceptActivity" />
         <activity android:name=".IOActivityExample" />
         <activity android:name=".SwipeBehaviorExampleActivity" />
-        <activity android:name=".Main2Activity" />
-        <activity android:name=".CropImage">
+        <activity android:name=".Main2Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".StartActivity" >
+        <activity android:name=".CropImage">
+
+        </activity>
+        <activity android:name=".StartActivity">
 
         </activity>
         <activity android:name=".ImagePanActivity">

@@ -1,8 +1,12 @@
 package com.naver.android.helloyako.imagecrop.model;
 
 import android.graphics.Bitmap;
+import android.graphics.Rect;
+import android.graphics.RectF;
 
 import com.naver.android.helloyako.imagecrop.util.BitmapLoadUtils;
+
+import static android.R.attr.bitmap;
 
 /**
  * Created by helloyako on 2016. 5. 10..
@@ -14,7 +18,6 @@ public class CropInfo {
     private float viewImageLeft;
     private float cropTop;
     private float cropLeft;
-
     private float cropWidth;
     private float cropHeight;
 
@@ -30,16 +33,6 @@ public class CropInfo {
         this.cropHeight = cropHeight;
     }
 
-    public void setXY(int viewImageTop, int y, int h, int w)
-    {
-        this.viewImageLeft=0;
-        this.viewImageTop=0;
-        this.cropLeft=0;
-        this.cropTop=0;
-        this.scale=0;
-        this.cropHeight=0;
-        this.cropWidth=0;
-    }
 
     public Bitmap getCroppedImage(String path) {
         return getCroppedImage(path, 4000);
@@ -47,7 +40,6 @@ public class CropInfo {
 
     /**
      * @param reqSize for image sampling
-     *
      */
     public Bitmap getCroppedImage(String path, int reqSize) {
         Bitmap bitmap = BitmapLoadUtils.decode(path, reqSize, reqSize);
@@ -80,35 +72,22 @@ public class CropInfo {
         return Bitmap.createBitmap(bitmap, (int) x, (int) y, (int) actualCropWidth, (int) actualCropHeight);
     }
 
-    public float getScale() {
-        return scale;
+
+    public RectF getCroppedRect() {
+        RectF croppedRect = new RectF();
+        float left = Math.abs(viewImageLeft - cropLeft) / scale;
+        float top = Math.abs(viewImageTop - cropTop) / scale;
+        float right = Math.abs(left + cropWidth / scale);
+        float bottom = Math.abs(top + cropHeight / scale);
+
+        croppedRect.set(
+                left,
+                top,
+                right,
+                bottom
+        );
+        return croppedRect;
     }
 
-    public float getViewBitmapWidth() {
-        return viewBitmapWidth;
-    }
 
-    public float getViewImageTop() {
-        return viewImageTop;
-    }
-
-    public float getViewImageLeft() {
-        return viewImageLeft;
-    }
-
-    public float getCropTop() {
-        return cropTop;
-    }
-
-    public float getCropLeft() {
-        return cropLeft;
-    }
-
-    public float getCropWidth() {
-        return cropWidth;
-    }
-
-    public float getCropHeight() {
-        return cropHeight;
-    }
 }
