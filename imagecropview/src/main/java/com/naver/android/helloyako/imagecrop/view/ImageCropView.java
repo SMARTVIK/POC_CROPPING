@@ -92,7 +92,7 @@ public class ImageCropView extends ImageView {
 
     protected RectF mBitmapRect = new RectF();
     protected RectF mCenterRect = new RectF();
-    protected RectF mScrollRect = new RectF();
+    //    protected RectF mScrollRect = new RectF();
     protected RectF mCropRect = new RectF();
 
     private Paint mTransparentLayerPaint;
@@ -194,40 +194,6 @@ public class ImageCropView extends ImageView {
     }
 
 
-    public void setCropRect(final RectF croppedRect) {
-
-        this.mCroppedRect = croppedRect;
-
-//        if (croppedRect == null || croppedRect.isEmpty())
-//            return;
-//
-//        Log.d("cropped Rect:= ", croppedRect.flattenToString());
-//
-//        CropInfo cropInfo = getCropInfo();
-//
-//        if (cropInfo == null) {
-//            mPostLayoutRunnable = new Runnable() {
-//
-//                @Override
-//                public void run() {
-//                    setCropRect(croppedRect);
-//                    requestLayout();
-//                }
-//            };
-//            return;
-//        }
-//
-//        Rect currentCropRect = cropInfo.getCroppedRect();
-//        float widthScale = Math.min(croppedRect.width() / currentCropRect.width(), croppedRect.width() / currentCropRect.height());
-//        float heightScale = Math.min(croppedRect.height() / currentCropRect.height(), croppedRect.height() / currentCropRect.width());
-////        scale =;
-////
-////        mMaxScale = mMi
-//// nScale * mMaxScaleMultiplier;
-//        postScale(Math.max(widthScale, heightScale), (croppedRect.right - croppedRect.left) / 2, (croppedRect.bottom - croppedRect.top) / 2);
-
-    }
-
     @Override
     public void setScaleType(ScaleType scaleType) {
         if (scaleType == ScaleType.MATRIX) {
@@ -245,40 +211,6 @@ public class ImageCropView extends ImageView {
 
     }
 
-
-    private void setUpIntialScale(RectF croppedRect) {
-        if (croppedRect == null || croppedRect.isEmpty())
-            return;
-        CropInfo cropInfo = getCropInfo();
-        if (cropInfo == null)
-            return;
-
-        RectF currentCropRect = cropInfo.getCroppedRect();
-
-        float widthScale = currentCropRect.width() / croppedRect.width();
-        float heightScale = currentCropRect.height() / croppedRect.height();
-        float targetScale = Math.max(widthScale, heightScale);
-//            (currentCropRect.right - currentCropRect.left) / 2, (currentCropRect.bottom - currentCropRect.top) / 2
-        targetScale = Math.min(getMaxScale(), Math.max(targetScale, getMinScale() - 0.1f));
-        zoomTo(targetScale, (croppedRect.right - croppedRect.left) / 2, (croppedRect.bottom - croppedRect.top) / 2);
-    }
-
-    private void setUpIntialTranslate(RectF croppedRect) {
-        if (croppedRect == null || croppedRect.isEmpty())
-            return;
-
-        CropInfo cropInfo = getCropInfo();
-        if (cropInfo == null)
-            return;
-
-        RectF currentCropRect = cropInfo.getCroppedRect();
-
-//        float distanceX = Math.max((croppedRect.left-currentCropRect.left), (croppedRect.right-currentCropRect.right));
-//        float distanceY = Math.max((croppedRect.top-currentCropRect.top), (croppedRect.bottom-currentCropRect.bottom));
-        float distanceX = (currentCropRect.left - croppedRect.left);
-        float distanceY = (currentCropRect.top - croppedRect.top);
-        scrollBy((float) Math.pow(distanceX, 2), (float) Math.pow(distanceY, 2));
-    }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
@@ -417,8 +349,33 @@ public class ImageCropView extends ImageView {
             croppedRect = mCroppedRect;
             mCroppedRect = null;
         }
-        setUpIntialScale(croppedRect);
-        setUpIntialTranslate(croppedRect);
+
+        cropToRect(croppedRect);
+    }
+
+
+    public void setCropRect(final RectF croppedRect) {
+        this.mCroppedRect = croppedRect;
+    }
+
+
+    private void cropToRect(RectF croppedRect) {
+        if (croppedRect == null || croppedRect.isEmpty())
+            return;
+        CropInfo cropInfo = getCropInfo();
+        if (cropInfo == null)
+            return;
+
+        RectF currentCropRect = cropInfo.getCroppedRect();
+
+        float widthScale = currentCropRect.width() / croppedRect.width();
+        float heightScale = currentCropRect.height() / croppedRect.height();
+        float targetScale = Math.max(widthScale, heightScale);
+        targetScale = Math.min(getMaxScale(), Math.max(targetScale, getMinScale() - 0.1f));
+        zoomTo(targetScale, (croppedRect.right - croppedRect.left) / 2, (croppedRect.bottom - croppedRect.top) / 2);
+        float distanceX = (currentCropRect.left - croppedRect.left) * targetScale;
+        float distanceY = (currentCropRect.top - croppedRect.top) * targetScale;
+        scrollBy(3 * distanceX, 3 * distanceY);
     }
 
     public void resetDisplay() {
@@ -878,13 +835,13 @@ public class ImageCropView extends ImageView {
         }
     }
 
+
     public void scrollBy(float x, float y) {
         panBy(x, y);
     }
 
     protected void panBy(double dx, double dy) {
-        mScrollRect.set((float) dx, (float) dy, 0, 0);
-        postTranslate(mScrollRect.left, mScrollRect.top);
+        postTranslate((float) dx, (float) dy);
         adjustCropAreaImage();
     }
 
